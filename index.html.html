@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nguyễn Trung Kiên — CV</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080810;
+    --surface: #10101C;
+    --surface2: #181828;
+    --surface3: #1E1E32;
+    --accent: #C8FF00;
+    --accent2: #FF3CAC;
+    --accent3: #00E5FF;
+    --text: #EEEEF8;
+    --muted: #6A6A8A;
+    --border: #252538;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  @media print {
+    body { background: #fff; color: #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .noise { display: none; }
+  }
+
+  .noise {
+    position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page { max-width: 960px; margin: 0 auto; position: relative; }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    align-items: end;
+    padding: 52px 56px 44px;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    gap: 32px;
+  }
+
+  .vinyl {
+    position: absolute; right: -80px; top: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    border: 1px solid rgba(200,255,0,.08);
+    box-shadow:
+      inset 0 0 0 20px rgba(0,0,0,.5),
+      inset 0 0 0 40px rgba(200,255,0,.04),
+      inset 0 0 0 80px rgba(0,0,0,.3),
+      inset 0 0 0 120px rgba(255,60,172,.03),
+      0 0 80px rgba(200,255,0,.06);
+    animation: spin 30s linear infinite;
+    pointer-events: none; opacity: .7;
+  }
+  .vinyl::before {
+    content: '';
+    position: absolute; inset: 30px; border-radius: 50%;
+    border: 1px solid rgba(200,255,0,.06);
+    box-shadow: inset 0 0 0 20px rgba(0,0,0,.4), inset 0 0 0 50px rgba(255,60,172,.03);
+  }
+  .vinyl::after {
+    content: '';
+    position: absolute; inset: 48%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,255,0,.4), transparent 70%);
+    box-shadow: 0 0 20px rgba(200,255,0,.3);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .glow-1 {
+    position: absolute; bottom: -40px; left: 20%;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(255,60,172,.12), transparent 70%);
+    pointer-events: none;
+  }
+  .glow-2 {
+    position: absolute; top: 20px; left: 40%;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0,229,255,.07), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px; letter-spacing: 3.5px;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(58px, 7.5vw, 88px);
+    line-height: .92; letter-spacing: 2px; margin-bottom: 18px;
+  }
+  h1 .outline { -webkit-text-stroke: 1.5px var(--accent); color: transparent; }
+  h1 .solid { color: var(--text); }
+
+  .hero-role {
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 28px;
+  }
+
+  .contacts { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+  .contact-item {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--muted); display: flex; align-items: center; gap: 6px;
+  }
+  .contact-item a { color: inherit; text-decoration: none; }
+  .ci { color: var(--accent); font-size: 11px; }
+
+  .hero-right {
+    display: flex; flex-direction: column;
+    align-items: flex-end; justify-content: flex-end;
+    gap: 9px; z-index: 1;
+  }
+  .badge {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 100px; padding: 5px 14px;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .badge.lime { border-color: var(--accent); color: var(--accent); background: rgba(200,255,0,.06); }
+  .badge.pink { border-color: var(--accent2); color: var(--accent2); background: rgba(255,60,172,.06); }
+  .badge.cyan { border-color: var(--accent3); color: var(--accent3); background: rgba(0,229,255,.05); }
+
+  .portfolio-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(200,255,0,.08); border: 1px solid rgba(200,255,0,.3);
+    border-radius: 100px; padding: 6px 16px;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--accent); letter-spacing: 1px; text-transform: uppercase;
+    text-decoration: none; margin-top: 2px;
+    transition: background .2s;
+  }
+  .portfolio-btn:hover { background: rgba(200,255,0,.15); }
+
+  /* BODY */
+  .body { display: grid; grid-template-columns: 1fr 280px; }
+
+  .main { padding: 48px 44px 40px 56px; border-right: 1px solid var(--border); }
+
+  .section { margin-bottom: 40px; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+  .music-notes {
+    font-size: 14px; letter-spacing: 8px; color: var(--accent2);
+    opacity: .35; margin-bottom: 8px; font-family: serif;
+  }
+
+  .job {
+    margin-bottom: 28px; position: relative; padding-left: 18px;
+    border-radius: 8px; padding: 12px 12px 12px 28px;
+    transition: background .3s, box-shadow .3s;
+    cursor: default;
+  }
+  .job:hover {
+    background: rgba(200,255,0,.04);
+    box-shadow: 0 0 24px rgba(200,255,0,.07), inset 0 0 0 1px rgba(200,255,0,.08);
+  }
+  .job:hover .job-company { color: var(--accent); transition: color .3s; }
+  .job:hover::before { background: linear-gradient(180deg, var(--accent), transparent); }
+  .job::before {
+    content: '';
+    position: absolute; left: 0; top: 10px; bottom: -10px;
+    width: 1px; background: linear-gradient(180deg, var(--accent2), transparent);
+  }
+
+  .job-company {
+    font-family: 'Bebas Neue', sans-serif; font-size: 21px;
+    letter-spacing: 1.5px; color: var(--text); line-height: 1; margin-bottom: 5px;
+  }
+  .job-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .job-role { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--accent2); }
+  .sep { color: var(--border); }
+  .job-period { font-family: 'DM Mono', monospace; font-size: 10.5px; color: var(--muted); }
+
+  .job ul { list-style: none; }
+  .job ul li { font-size: 13px; color: #AAAAC4; padding: 3px 0 3px 16px; position: relative; line-height: 1.6; }
+  .job ul li::before { content: '▸'; position: absolute; left: 0; top: 5px; color: var(--accent); font-size: 9px; }
+  .job ul li strong { color: var(--text); font-weight: 500; }
+  .inline-link { color: var(--accent); font-size: 11px; font-family: 'DM Mono', monospace; text-decoration: none; }
+
+  /* EQ BARS */
+  .eq-wrap {
+    padding: 24px 0 0;
+    display: flex; align-items: flex-end; gap: 3.5px; height: 56px;
+    overflow: hidden;
+  }
+  .eq-bar {
+    flex: 1; border-radius: 2px 2px 0 0;
+    transform-origin: bottom;
+    animation: eqb var(--d, 1s) ease-in-out infinite alternate;
+    opacity: .55;
+  }
+  @keyframes eqb { from { transform: scaleY(.1); } to { transform: scaleY(1); } }
+
+  /* SIDEBAR */
+  .sidebar {
+    padding: 48px 28px 40px 32px;
+    background: var(--surface); position: relative; overflow: hidden;
+  }
+  .sidebar::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 280px; height: 280px; border-radius: 50%;
+    border: 1px solid rgba(200,255,0,.04);
+    box-shadow:
+      0 0 0 24px rgba(0,0,0,0), 0 0 0 48px rgba(200,255,0,.025),
+      0 0 0 72px rgba(0,0,0,0), 0 0 0 96px rgba(255,60,172,.02);
+    pointer-events: none;
+  }
+
+  .summary-text {
+    font-size: 12.5px; color: #AAAAC4; line-height: 1.8;
+    padding: 13px 13px 13px 15px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0;
+  }
+
+  .skill-group { margin-bottom: 20px; }
+  .skill-group-label {
+    font-family: 'DM Mono', monospace; font-size: 9.5px;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 3px 9px; font-size: 11.5px; color: #AAAAC4;
+  }
+  .tag.lime { border-color: rgba(200,255,0,.35); color: var(--accent); background: rgba(200,255,0,.05); }
+  .tag.pink { border-color: rgba(255,60,172,.35); color: var(--accent2); background: rgba(255,60,172,.05); }
+  .tag.cyan { border-color: rgba(0,229,255,.3); color: var(--accent3); background: rgba(0,229,255,.04); }
+
+  .edu-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px;
+    position: relative; overflow: hidden;
+  }
+  .edu-box::after {
+    content: '♪'; position: absolute; right: 12px; bottom: 6px;
+    font-size: 32px; color: var(--accent); opacity: .07; font-family: serif;
+  }
+  .edu-school { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 1px; color: var(--text); line-height: 1.2; margin-bottom: 4px; }
+  .edu-degree { font-size: 11.5px; color: var(--muted); margin-bottom: 5px; }
+  .edu-gpa { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); }
+
+  .portfolio-card {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 1px solid rgba(200,255,0,.22);
+    border-radius: 8px; padding: 12px 14px; text-decoration: none;
+    transition: border-color .2s;
+  }
+  .portfolio-card:hover { border-color: var(--accent); }
+  .portfolio-card-label { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+  .portfolio-card-title { font-size: 12.5px; color: var(--text); font-weight: 500; }
+
+  /* FOOTER */
+  .footer {
+    padding: 14px 56px; background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-l { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .footer-r { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+
+  @media (max-width: 700px) {
+    .hero, .body { grid-template-columns: 1fr; }
+    .hero { padding: 32px; }
+    .main { padding: 32px; border-right: none; border-bottom: 1px solid var(--border); }
+    .sidebar { padding: 32px; }
+    .footer { padding: 14px 32px; flex-direction: column; gap: 4px; text-align: center; }
+    .vinyl { right: -120px; top: -120px; }
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="page">
+
+  <header class="hero">
+    <div class="vinyl"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+
+    <div style="position:relative;z-index:1;">
+      <div class="hero-tag">Creative · AI · Marketing</div>
+      <h1>
+        <span class="solid">NGUYỄN </span><span class="outline">TRUNG</span><br/>
+        <span class="solid">KIÊN</span>
+      </h1>
+      <div class="hero-role">Marketing Specialist</div>
+      <div class="contacts">
+        <div class="contact-item"><span class="ci">✉</span> nkien21cv@gmail.com</div>
+        <div class="contact-item"><span class="ci">☎</span> 0375 009 751</div>
+        <div class="contact-item"><span class="ci">↗</span><a href="https://www.linkedin.com/in/kelvin-ng-t/" target="_blank">linkedin.com/in/kelvin-ng-t</a></div>
+        <div class="contact-item"><span class="ci">◎</span> Ho Chi Minh City, Vietnam</div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="badge">5+ YRS EXP</div>
+      <div class="badge lime">WEB3 NATIVE</div>
+      <div class="badge pink">OPEN TO WORK</div>
+      <div class="badge cyan">AI LEARNER</div>
+      <a class="portfolio-btn" href="https://drive.google.com/file/d/1VB7bsK--8HEhP5MNhCtIHszRZr5yN0ai/view?usp=sharing" target="_blank">↗ Pitch Deck Portfolio</a>
+    </div>
+  </header>
+
+  <div class="body">
+    <main class="main">
+      <section class="section">
+        <div class="music-notes">♩ ♪ ♫ ♬ ♩ ♪</div>
+        <div class="section-label">Work Experience</div>
+
+        <div class="job">
+          <div class="job-company">Lifenetwork.ai (LIFE AI)</div>
+          <div class="job-meta">
+            <span class="job-role">Marketing &amp; Community Manager</span>
+            <span class="sep">·</span>
+            <span class="job-period">Oct 2025 – Present · Vietnam</span>
+          </div>
+          <ul>
+            <li>Scaled Discord from <strong>0 to 30,000 members in 2 weeks</strong>, maintaining strong engagement and community health.</li>
+            <li>Planned and executed end-to-end marketing campaigns including content, channel strategy, and community growth.</li>
+            <li>Implemented retention initiatives to strengthen user loyalty across Discord, Telegram, and X.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-company">Tevel Labs</div>
+          <div class="job-meta">
+            <span class="job-role">Marketing &amp; Business Development</span>
+            <span class="sep">·</span>
+            <span class="job-period">Jan 2024 – Oct 2025 · Singapore</span>
+          </div>
+          <ul>
+            <li>Led go-to-market strategy and marketing execution for Web3 projects across Tevel Labs' portfolio.</li>
+            <li>Coordinated between builders, investors, and the core team to ensure project alignment and delivery.</li>
+            <li>Supported BD activities including partnership outreach and investor communications.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-company">Freelancer · Web3 Marketing</div>
+          <div class="job-meta">
+            <span class="job-role">Marketing Specialist &amp; Pitch Deck Creator</span>
+            <span class="sep">·</span>
+            <span class="job-period">2021 – Present · Vietnam</span>
+          </div>
+          <ul>
+            <li><strong>Miss Charm 2024:</strong> Integrated blockchain-based voting via the Miss Charm Tapbot on Telegram, leveraging the rise of Telegram MiniApps. Developed the tapbot interaction logic and designed the full end-to-end user flow from onboarding to vote submission.</li>
+            <li>Planned and executed the Web3 marketing strategy to promote the event and drive user participation across platforms.</li>
+            <li>Designed and wrote investor-ready pitch decks for multiple blockchain startups raising funds from VCs and accelerators, working closely with founders to highlight each project's core value proposition. <a class="inline-link" href="https://drive.google.com/file/d/1VB7bsK--8HEhP5MNhCtIHszRZr5yN0ai/view?usp=sharing" target="_blank">↗ View Portfolio</a></li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-company">XelebX · SocialFi Platform</div>
+          <div class="job-meta">
+            <span class="job-role">Marketing &amp; Business Development</span>
+            <span class="sep">·</span>
+            <span class="job-period">Jan – Jun 2024 · Singapore</span>
+          </div>
+          <ul>
+            <li>Created pitch decks used at <strong>TOKEN2049 Dubai</strong> (DWF Labs area), generating investor interest and strategic partnerships.</li>
+            <li>Authored project documents including Gitbook, Terms of Service, and Press Releases.</li>
+            <li>Executed multi-platform content strategy across Facebook, X, Discord, Telegram, and Instagram.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-company">Dizitech E-com &amp; Marketing Agency</div>
+          <div class="job-meta">
+            <span class="job-role">Marketing Planner</span>
+            <span class="sep">·</span>
+            <span class="job-period">Jul 2021 – Dec 2023 · Vietnam</span>
+          </div>
+          <ul>
+            <li>Developed IMC plans for <strong>CloudView Camping, AAA Insurance, Kim Cuong Vang Cordyceps, N Coffee</strong> and more, helping the agency win multiple pitching rounds.</li>
+            <li>Grew <strong>PROVENCE</strong>'s e-commerce revenue <strong>140% YoY</strong> on Shopee, Lazada and Tiki; reduced cancelled orders by <strong>50% annually</strong>.</li>
+          </ul>
+        </div>
+
+        <!-- EQ BARS -->
+        <div class="eq-wrap">
+          <div class="eq-bar" style="background:var(--accent2);height:40px;--d:.8s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:54px;--d:1.1s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:30px;--d:.7s;"></div>
+          <div class="eq-bar" style="background:var(--accent3);height:48px;--d:1.3s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:36px;--d:.9s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:50px;--d:1.2s;"></div>
+          <div class="eq-bar" style="background:var(--accent3);height:42px;--d:.85s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:28px;--d:1.0s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:54px;--d:.75s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:38px;--d:1.15s;"></div>
+          <div class="eq-bar" style="background:var(--accent3);height:44px;--d:.95s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:32px;--d:1.05s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:52px;--d:.8s;"></div>
+          <div class="eq-bar" style="background:var(--accent3);height:36px;--d:1.25s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:46px;--d:.88s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:40px;--d:1.1s;"></div>
+          <div class="eq-bar" style="background:var(--accent3);height:26px;--d:.72s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:50px;--d:1.0s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:42px;--d:.9s;"></div>
+          <div class="eq-bar" style="background:var(--accent2);height:34px;--d:1.18s;"></div>
+          <div class="eq-bar" style="background:var(--accent3);height:48px;--d:.82s;"></div>
+          <div class="eq-bar" style="background:var(--accent);height:56px;--d:1.05s;"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="sidebar">
+
+      <section class="section">
+        <div class="section-label">About</div>
+        <p class="summary-text">
+          Marketer with 5+ years of experience, spanning traditional digital marketing and Web3 (launchpads, AI, GameFi, SocialFi). Agency background means fast adaptability across industries and a results-over-process mindset.<br/><br/>
+          Always looking for the smarter, faster way to get things done. Currently learning AI-powered vibe-coding to push that further.
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Education</div>
+        <div class="edu-box">
+          <div class="edu-school">University of Economics HCMC</div>
+          <div class="edu-degree">Bachelor of Business Administration</div>
+          <div class="edu-gpa">GPA: 7.46 / 10</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Core Skills</div>
+        <div class="skill-group">
+          <div class="skill-group-label">Strategy</div>
+          <div class="skill-tags">
+            <span class="tag lime">Marketing Strategy</span>
+            <span class="tag lime">Business Dev</span>
+            <span class="tag lime">Go-to-Market</span>
+            <span class="tag lime">Pitch Decks</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Web3</div>
+          <div class="skill-tags">
+            <span class="tag pink">Community Building</span>
+            <span class="tag pink">SocialFi</span>
+            <span class="tag pink">GameFi</span>
+            <span class="tag pink">Launchpad</span>
+            <span class="tag pink">Token2049</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Platforms</div>
+          <div class="skill-tags">
+            <span class="tag">Facebook</span>
+            <span class="tag">Threads</span>
+            <span class="tag">Telegram</span>
+            <span class="tag">X / Twitter</span>
+            <span class="tag">TikTok</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-label">Currently Learning</div>
+          <div class="skill-tags">
+            <span class="tag cyan">AI Vibe-Coding</span>
+            <span class="tag cyan">AI Workflow</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Portfolio</div>
+        <a class="portfolio-card" href="https://drive.google.com/file/d/1VB7bsK--8HEhP5MNhCtIHszRZr5yN0ai/view?usp=sharing" target="_blank">
+          <div style="flex:1;">
+            <div class="portfolio-card-label">Pitch Deck</div>
+            <div class="portfolio-ca
