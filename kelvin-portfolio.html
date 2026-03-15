@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kelvin Ng · Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg-dark: #080810;
+  --bg-light: #F2F0E8;
+  --surface-dark: #10101C;
+  --surface-light: #E8E5D8;
+  --accent: #C8FF00;
+  --accent2: #FF3CAC;
+  --accent3: #00E5FF;
+  --text-dark: #EEEEF8;
+  --text-light: #1A1A2E;
+  --muted-dark: #6A6A8A;
+  --muted-light: #888878;
+  --border-dark: #252538;
+  --border-light: #D0CEC0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed; width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, background .2s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed; width: 36px; height: 36px;
+  border: 1px solid rgba(200,255,0,.5); border-radius: 50%;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: all .12s ease-out;
+}
+body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 20px; height: 20px; }
+body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--accent2); }
+
+/* NOISE */
+.noise {
+  position: fixed; inset: 0; pointer-events: none; z-index: 200; opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 56px;
+  background: rgba(8,8,16,.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: all .3s;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: 2px;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 36px; }
+.nav-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted-dark);
+  cursor: pointer; text-decoration: none;
+  transition: color .2s; position: relative;
+  background: none; border: none;
+}
+.nav-link::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px; background: var(--accent);
+  transition: width .25s;
+}
+.nav-link:hover, .nav-link.active { color: var(--accent); }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* PAGES */
+.page { display: none; min-height: 100vh; padding-top: 80px; }
+.page.active { display: block; }
+
+/* ══════════════════════════
+   HOME PAGE
+══════════════════════════ */
+#home {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 100vh; padding-top: 0;
+}
+
+canvas#bg-canvas {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+}
+
+.home-content {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  min-height: 100vh;
+  padding: 0 56px;
+  max-width: 960px; margin: 0 auto; width: 100%;
+}
+
+.home-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 14px;
+  animation: fadeUp .8s ease both;
+}
+.home-eyebrow::before { content:''; width: 32px; height: 1px; background: var(--accent); }
+
+.home-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 11vw, 140px);
+  line-height: .88; letter-spacing: 3px;
+  margin-bottom: 28px;
+  animation: fadeUp .8s .1s ease both;
+}
+.home-title .outline {
+  -webkit-text-stroke: 1.5px var(--accent);
+  color: transparent;
+}
+.home-title .solid { color: var(--text-dark); }
+
+.home-sub {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(18px, 2.5vw, 26px);
+  color: var(--muted-dark);
+  max-width: 540px;
+  line-height: 1.5;
+  margin-bottom: 44px;
+  animation: fadeUp .8s .2s ease both;
+}
+
+.home-ctas {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  animation: fadeUp .8s .3s ease both;
+}
+.btn-primary {
+  background: var(--accent); color: var(--bg-dark);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 28px; border: none; border-radius: 100px;
+  cursor: pointer; transition: all .2s;
+}
+.btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,255,0,.25); }
+.btn-outline {
+  background: transparent; color: var(--text-dark);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 28px; border: 1px solid var(--border-dark);
+  border-radius: 100px; cursor: pointer; transition: all .2s;
+}
+.btn-outline:hover { border-color: var(--accent2); color: var(--accent2); transform: translateY(-2px); }
+
+/* scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 56px;
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; color: var(--muted-dark);
+  animation: fadeUp .8s .5s ease both;
+}
+.scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine { 0%,100%{opacity:.3;transform:scaleY(.5)} 50%{opacity:1;transform:scaleY(1)} }
+
+/* stats row */
+.home-stats {
+  position: absolute; bottom: 32px; right: 56px;
+  display: flex; gap: 40px;
+  animation: fadeUp .8s .4s ease both;
+  z-index: 1;
+}
+.stat { text-align: right; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; color: var(--accent); letter-spacing: 1px; line-height: 1;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted-dark);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════
+   WORK PAGE
+══════════════════════════ */
+#work { background: var(--bg-light); color: var(--text-light); padding-top: 100px; }
+
+.work-header {
+  padding: 60px 56px 48px;
+  border-bottom: 1px solid var(--border-light);
+}
+.section-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--muted-light); margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 7vw, 80px);
+  letter-spacing: 2px; line-height: .9;
+  color: var(--text-light);
+}
+.section-title span { color: var(--accent2); }
+
+/* PROJECT GRID */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  background: var(--border-light);
+  border-top: 1px solid var(--border-light);
+}
+
+.project-card {
+  background: var(--bg-light);
+  padding: 36px 40px;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: background .3s;
+}
+.project-card:hover { background: var(--text-light); }
+.project-card:hover .proj-title,
+.project-card:hover .proj-role { color: var(--bg-light); }
+.project-card:hover .proj-desc { color: rgba(242,240,232,.7); }
+.project-card:hover .proj-img-placeholder { opacity: .15; }
+.project-card:hover .proj-arrow { opacity: 1; transform: translateX(0); }
+.project-card:hover .proj-tag { border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.6); }
+
+/* card sizes */
+.card-wide { grid-column: span 8; }
+.card-half { grid-column: span 6; }
+.card-third { grid-column: span 4; }
+.card-full  { grid-column: span 12; }
+
+.proj-year {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; color: var(--muted-light); margin-bottom: 16px;
+}
+.project-card:hover .proj-year { color: rgba(242,240,232,.4); }
+
+.proj-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 56px;
+  color: var(--border-light); letter-spacing: 1px; line-height: 1;
+  position: absolute; top: 24px; right: 32px;
+  transition: color .3s;
+}
+.project-card:hover .proj-num { color: rgba(255,255,255,.06); }
+
+.proj-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(24px, 2.5vw, 32px);
+  letter-spacing: 1px; color: var(--text-light);
+  line-height: 1; margin-bottom: 6px;
+  transition: color .3s;
+}
+.proj-role {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: 16px;
+  transition: color .3s;
+}
+.proj-desc {
+  font-size: 13px; color: var(--muted-light);
+  line-height: 1.65; max-width: 480px;
+  transition: color .3s;
+}
+.proj-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 20px; }
+.proj-tag {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 1px; padding: 3px 10px;
+  border: 1px solid var(--border-light);
+  border-radius: 100px; color: var(--muted-light);
+  transition: all .3s;
+}
+
+/* placeholder image */
+.proj-img-placeholder {
+  width: 100%; margin-top: 24px; border-radius: 6px;
+  background: linear-gradient(135deg, var(--surface-light), var(--border-light));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted-light);
+  transition: opacity .3s;
+}
+.proj-img-placeholder.tall { height: 220px; }
+.proj-img-placeholder.short { height: 140px; }
+
+.proj-arrow {
+  position: absolute; bottom: 28px; right: 28px;
+  font-size: 20px; color: var(--accent);
+  opacity: 0; transform: translateX(-8px);
+  transition: all .3s;
+}
+
+/* STUDENT ACHIEVEMENT BANNER */
+.achievement-banner {
+  grid-column: span 12;
+  background: var(--text-light);
+  padding: 48px 56px;
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 48px; align-items: center;
+}
+.achievement-medal {
+  font-size: 72px; line-height: 1;
+  filter: grayscale(20%);
+}
+.achievement-text {}
+.achievement-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(242,240,232,.4); margin-bottom: 10px;
+}
+.achievement-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 4vw, 52px); letter-spacing: 2px;
+  color: var(--bg-light); line-height: 1; margin-bottom: 10px;
+}
+.achievement-title span { color: var(--accent); }
+.achievement-desc { font-size: 14px; color: rgba(242,240,232,.6); max-width: 560px; line-height: 1.65; }
+.achievement-img {
+  width: 100%; height: 180px; border-radius: 8px; margin-top: 20px;
+  background: linear-gradient(135deg, #2A2A3A, #1A1A28);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; color: rgba(200,255,0,.4); text-transform: uppercase;
+  grid-column: span 2;
+}
+
+/* ══════════════════════════
+   ABOUT PAGE
+══════════════════════════ */
+#about { background: var(--bg-dark); color: var(--text-dark); padding-top: 100px; }
+
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 80px);
+}
+
+.about-left {
+  padding: 60px 56px;
+  border-right: 1px solid var(--border-dark);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.about-right { padding: 60px 56px; }
+
+.about-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 7vw, 88px);
+  letter-spacing: 2px; line-height: .9;
+  margin-bottom: 32px;
+}
+.about-title .line2 {
+  -webkit-text-stroke: 1.5px var(--accent2);
+  color: transparent; display: block;
+}
+
+.about-bio {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px; line-height: 1.8;
+  color: #AAAAC4; font-style: italic;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px; margin-bottom: 40px;
+}
+
+.contact-block { margin-top: auto; }
+.contact-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 0; border-top: 1px solid var(--border-dark);
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  color: var(--muted-dark); transition: color .2s;
+}
+.contact-row:hover { color: var(--accent); }
+.contact-row a { color: inherit; text-decoration: none; }
+.contact-icon { color: var(--accent); width: 16px; }
+
+/* timeline */
+.timeline-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 32px;
+  display: flex; align-items: center; gap: 12px;
+}
+.timeline-label::after { content:''; flex:1; height:1px; background: linear-gradient(90deg, var(--border-dark), transparent); }
+
+.timeline { position: relative; }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px; background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+}
+
+.tl-item {
+  padding: 0 0 28px 24px; position: relative;
+}
+.tl-item::before {
+  content: ''; position: absolute; left: -4px; top: 6px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent2); border: 2px solid var(--bg-dark);
+  box-shadow: 0 0 8px var(--accent2);
+}
+.tl-year {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; color: var(--muted-dark); margin-bottom: 4px;
+}
+.tl-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 20px;
+  letter-spacing: 1px; color: var(--text-dark); line-height: 1; margin-bottom: 2px;
+}
+.tl-role { font-size: 12px; color: var(--accent2); font-weight: 500; }
+
+/* skills */
+.skills-section { margin-top: 40px; }
+.skills-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.skill-chip {
+  background: var(--surface-dark); border: 1px solid var(--border-dark);
+  border-radius: 6px; padding: 6px 14px;
+  font-size: 12px; color: #AAAAC4;
+  transition: all .2s;
+}
+.skill-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,255,0,.06); }
+.skill-chip.hot { border-color: rgba(200,255,0,.3); color: var(--accent); background: rgba(200,255,0,.05); }
+.skill-chip.pink { border-color: rgba(255,60,172,.3); color: var(--accent2); background: rgba(255,60,172,.05); }
+
+/* FOOTER */
+footer {
+  background: var(--surface-dark); border-top: 1px solid var(--border-dark);
+  padding: 24px 56px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--muted-dark); letter-spacing: 1.5px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { gap: 20px; }
+  .home-content, .work-header { padding-left: 24px; padding-right: 24px; }
+  .home-stats { right: 24px; gap: 20px; }
+  .scroll-hint { left: 24px; }
+  .card-wide, .card-half, .card-third, .card-full { grid-column: span 12; }
+  .project-card { padding: 24px; }
+  .achievement-banner { grid-template-columns: 1fr; gap: 24px; padding: 32px 24px; }
+  .achievement-img { grid-column: span 1; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-left { border-right: none; border-bottom: 1px solid var(--border-dark); padding: 40px 24px; }
+  .about-right { padding: 40px 24px; }
+  footer { padding: 20px 24px; flex-direction: column; gap: 6px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">K<span>·</span>NG</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')" id="nav-home">Home</button>
+    <button class="nav-link" onclick="showPage('work')" id="nav-work">Work</button>
+    <button class="nav-link" onclick="showPage('about')" id="nav-about">About</button>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div class="page active" id="home">
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="home-content">
+    <div class="home-eyebrow">Creative · AI · Marketing</div>
+    <h1 class="home-title">
+      <span class="solid">NGUYỄN<br/></span>
+      <span class="outline">TRUNG</span><br/>
+      <span class="solid">KIÊN</span>
+    </h1>
+    <p class="home-sub">
+      Marketer with 5+ years bridging traditional digital marketing and Web3.
+      I build communities, craft strategies, and find the smarter path forward.
+    </p>
+    <div class="home-ctas">
+      <button class="btn-primary" onclick="showPage('work')">View My Work</button>
+      <button class="btn-outline" onclick="showPage('about')">About Me</button>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+
+  <div class="home-stats">
+    <div class="stat">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years Exp</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">30K</div>
+      <div class="stat-label">Community in 2wks</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">140%</div>
+      <div class="stat-label">Revenue Growth</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ WORK ════════════ -->
+<div class="page" id="work">
+  <div class="work-header">
+    <div class="section-eyebrow">Selected Work · 2021 – Present</div>
+    <h2 class="section-title">Things I've<br/><span>Built &amp; Done</span></h2>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- ACHIEVEMENT BANNER -->
+    <div class="achievement-banner">
+      <div class="achievement-medal">🥈</div>
+      <div>
+        <div class="achievement-label">Student Achievement · 2021</div>
+        <div class="achievement-title">Á Quân <span>Marketing</span> Generator</div>
+        <div class="achievement-desc">
+          Runner-up at Marketing Generator — a national-level marketing competition for students. Developed a full campaign strategy, consumer insights, and creative execution under pressure.
+        </div>
+        <div class="proj-tags" style="margin-top:16px;">
+          <span class="proj-tag" style="border-color:rgba(200,255,0,.3);color:rgba(200,255,0,.7);">Campaign Strategy</span>
+          <span class="proj-tag" style="border-color:rgba(200,255,0,.3);color:rgba(200,255,0,.7);">Consumer Insight</span>
+          <span class="proj-tag" style="border-color:rgba(200,255,0,.3);color:rgba(200,255,0,.7);">Creative Execution</span>
+        </div>
+      </div>
+      <div class="achievement-img" style="grid-column:span 2;">
+        ↑ Replace with your competition photos / presentation slides
+      </div>
+    </div>
+
+    <!-- DIZITECH -->
+    <div class="project-card card-wide">
+      <div class="proj-num">01</div>
+      <div class="proj-year">2021 – 2023</div>
+      <div class="proj-title">Dizitech Agency</div>
+      <div class="proj-role">Marketing Planner</div>
+      <div class="proj-desc">
+        Developed IMC plans for CloudView Camping, AAA Insurance, Kim Cuong Vang Cordyceps, N Coffee and more — helping the agency win multiple pitching rounds.
+      </div>
+      <div class="proj-img-placeholder tall">↑ Add your campaign plans / pitch slides here</div>
+      <div class="proj-tags">
+        <span class="proj-tag">IMC Planning</span>
+        <span class="proj-tag">Pitching</span>
+        <span class="proj-tag">Multi-brand</span>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+
+    <!-- PROVENCE / SHOPEE -->
+    <div class="project-card card-third">
+      <div class="proj-num">02</div>
+      <div class="proj-year">2021 – 2023</div>
+      <div class="proj-title">Shopee · Provence</div>
+      <div class="proj-role">E-commerce Strategy</div>
+      <div class="proj-desc">
+        Grew PROVENCE's revenue 140% YoY on Shopee, Lazada &amp; Tiki. Reduced cancelled orders by 50% annually.
+      </div>
+      <div class="proj-img-placeholder short">↑ Shopee screenshots / analytics</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Shopee</span>
+        <span class="proj-tag">140% YoY</span>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+
+    <!-- XELEBX -->
+    <div class="project-card card-half">
+      <div class="proj-num">03</div>
+      <div class="proj-year">Jan – Jun 2024 · Singapore</div>
+      <div class="proj-title">XelebX</div>
+      <div class="proj-role">Marketing &amp; BD · SocialFi Platform</div>
+      <div class="proj-desc">
+        Created pitch decks used at TOKEN2049 Dubai (DWF Labs area). Authored Gitbook, ToS, Press Releases. Executed multi-platform content strategy.
+      </div>
+      <div class="proj-img-placeholder tall">↑ XelebX brand / event photos</div>
+      <div class="proj-tags">
+        <span class="proj-tag">TOKEN2049</span>
+        <span class="proj-tag">SocialFi</span>
+        <span class="proj-tag">Pitch Deck</span>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+
+    <!-- MISS CHARM -->
+    <div class="project-card card-half">
+      <div class="proj-num">04</div>
+      <div class="proj-year">2024 · Vietnam</div>
+      <div class="proj-title">Miss Charm 2024</div>
+      <div class="proj-role">Freelance · Web3 Marketing</div>
+      <div class="proj-desc">
+        Integrated blockchain voting via Telegram MiniApp tapbot for Miss Charm 2024. Developed the full interaction logic, user flow, and Web3 marketing strategy for the event.
+      </div>
+      <div class="proj-img-placeholder tall">↑ Miss Charm event / tapbot UI photos</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Telegram MiniApp</span>
+        <span class="proj-tag">Blockchain Voting</span>
+        <span class="proj-tag">Web3</span>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+
+    <!-- TEVEL LABS -->
+    <div class="project-card card-third">
+      <div class="proj-num">05</div>
+      <div class="proj-year">Jan 2024 – Oct 2025 · Singapore</div>
+      <div class="proj-title">Tevel Labs</div>
+      <div class="proj-role">Marketing &amp; BD</div>
+      <div class="proj-desc">
+        Led go-to-market for Web3 portfolio projects. Coordinated builders, investors and core team. Projects confidential — portfolio on request.
+      </div>
+      <div class="proj-img-placeholder short">↑ Tevel Labs branding / public assets</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Web3 GTM</span>
+        <span class="proj-tag">BD</span>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+
+    <!-- LIFE AI -->
+    <div class="project-card card-wide">
+      <div class="proj-num">06</div>
+      <div class="proj-year">Oct 2025 – Present · Vietnam</div>
+      <div class="proj-title">Life AI · Lifenetwork.ai</div>
+      <div class="proj-role">Marketing &amp; Community Manager</div>
+      <div class="proj-desc">
+        Scaled Discord from 0 to 30,000 members in 2 weeks. Planned and executed end-to-end marketing campaigns. Implemented retention initiatives across Discord, Telegram, and X.
+      </div>
+      <div class="proj-img-placeholder tall">↑ Life AI community screenshots / campaign assets</div>
+      <div class="proj-tags">
+        <span class="proj-tag">30K Members</span>
+        <span class="proj-tag">Community</span>
+        <span class="proj-tag">AI</span>
+        <span class="proj-tag">Discord</span>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════ ABOUT ════════════ -->
+<div class="page" id="about">
+  <div class="about-grid">
+    <div class="about-left">
+      <div>
+        <div class="section-eyebrow" style="margin-bottom:12px;">About Me</div>
+        <h2 class="about-title">
+          KELVIN<br/>
+          <span class="line2">NG</span>
+        </h2>
+        <p class="about-bio">
+          Marketer with 5+ years of experience, spanning traditional digital marketing and Web3. Agency background means fast adaptability and a results-over-process mindset. Currently learning AI-powered vibe-coding to push that further.
+        </p>
+        <div class="skills-section">
+          <div class="timeline-label">Skills</div>
+          <div class="skills-grid">
+            <span class="skill-chip hot">Marketing Strategy</span>
+            <span class="skill-chip hot">Go-to-Market</span>
+            <span class="skill-chip hot">Pitch Decks</span>
+            <span class="skill-chip pink">Community Building</span>
+            <span class="skill-chip pink">Web3</span>
+            <span class="skill-chip pink">SocialFi / GameFi</span>
+            <span class="skill-chip">Business Dev</span>
+            <span class="skill-chip">Content Strategy</span>
+            <span class="skill-chip">Facebook</span>
+            <span class="skill-chip">Telegram</span>
+            <span class="skill-chip">TikTok</span>
+            <span class="skill-chip">X / Twitter</span>
+            <span class="skill-chip" style="border-color:rgba(0,229,255,.3);color:#00E5FF;">AI Vibe-Coding</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="contact-row"><span class="contact-icon">✉</span> nkien21cv@gmail.com</div>
+        <div class="contact-row"><span class="contact-icon">☎</span> 0375 009 751</div>
+        <div class="contact-row"><span class="contact-icon">↗</span><a href="https://www.linkedin.com/in/kelvin-ng-t/" target="_blank">linkedin.com/in/kelvin-ng-t</a></div>
+        <div class="contact-row"><span class="contact-icon">📁</span><a href="https://drive.google.com/file/d/1VB7bsK--8HEhP5MNhCtIHszRZr5yN0ai/view?usp=sharing" target="_blank">Pitch Deck Portfolio</a></div>
+        <div class="contact-row"><span class="contact-icon">◎</span> Ho Chi Minh City, Vietnam</div>
+      </div>
+    </div>
+
+    <div class="about-right">
+      <div class="timeline-label">Experience Timeline</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">Oct 2025 – Present</div>
+          <div class="tl-name">Lifenetwork.ai</div>
+          <div class="tl-role">Marketing &amp; Community Manager</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Jan 2024 – Oct 2025</div>
+          <div class="tl-name">Tevel Labs</div>
+          <div class="tl-role">Marketing &amp; Business Development</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Jan – Jun 2024</div>
+          <div class="tl-name">XelebX</div>
+          <div class="tl-role">Marketing &amp; BD · SocialFi Platform</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2021 – Present</div>
+          <div class="tl-name">Freelancer</div>
+          <div class="tl-role">Web3 Marketing · Pitch Deck Creator</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Jul 2021 – Dec 2023</div>
+          <div class="tl-name">Dizitech Agency</div>
+          <div class="tl-role">Marketing Planner</div>
+        </div>
+        <div class="tl-item" style="padding-bottom:0;">
+          <div class="tl-year">2021</div>
+          <div class="tl-name">Á Quân Marketing Generator</div>
+          <div class="tl-role">National Student Competition · Runner-up</div>
+        </div>
+      </div>
+
+      <div style="margin-top:48px;">
+        <div class="timeline-label">Education</div>
+        <div style="background:var(--surface-dark);border:1px solid var(--border-dark);border-radius:10px;padding:20px 24px;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--text-dark);margin-bottom:4px;">University of Economics HCMC</div>
+          <div style="font-size:13px;color:var(--muted-dark);margin-bottom:6px;">Bachelor of Business Administration</div>
+          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);">GPA: 7.46 / 10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>♪ Nguyễn Trung Kiên · Portfolio 2025</span>
+    <span>nkien21cv@gmail.com</span>
+  </footer>
+</div>
+
+<!-- PARTICLE CANVAS -->
+<canvas id="particles" style="position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0;transition:opacity .5s;"></canvas>
+
+<script>
+// ── CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+(function animRing(){
+  rx += (mx-rx)*.12; ry += (my-ry)*.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+})();
+
+// ── PAGE SWITCHING
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  // particles only on home
+  const pc = document.getElementById('particles');
+  pc.style.opacity = id === 'home' ? '0.5' : '0';
+}
+
+// ── HOME PARTICLES
+const pc = document.getElementById('particles');
+const pctx = pc.getContext('2d');
+let PW, PH, parts = [];
+function resizeP(){ PW = pc.width = window.innerWidth; PH = pc.height = window.innerHeight; }
+resizeP(); window.addEventListener('resize', resizeP);
+const COLS = ['#C8FF00','#FF3CAC','#00E5FF'];
+class P {
+  constructor(init){ this.reset(init); }
+  reset(init){
+    this.x = Math.random()*PW;
+    this.y = init ? Math.random()*PH : PH+10;
+    this.r = Math.random()*1.6+.3;
+    this.vx = (Math.random()-.5)*.2;
+    this.vy = -(Math.random()*.35+.1);
+    this.col = COLS[Math.floor(Math.random()*3)];
+    this.a = Math.random()*.5+.1;
+    this.ts = Math.random()*.025+.005;
+    this.to = Math.random()*Math.PI*2;
+    this.life = 0; this.ml = Math.random()*500+200;
+  }
+  tick(){
+    this.x+=this.vx; this.y+=this.vy; this.life++;
+    this.ca = this.a*(0.5+0.5*Math.sin(this.life*this.ts+this.to));
+    if(this.y<-10||this.life>this.ml) this.reset(false);
+  }
+  draw(){
+    pctx.save(); pctx.globalAlpha=this.ca;
+    pctx.fillStyle=this.col; pctx.shadowColor=this.col; pctx.shadowBlur=this.r*4;
+    pctx.beginPath(); pctx.arc(this.x,this.y,this.r,0,Math.PI*2); pctx.fill();
+    pctx.restore();
+  }
+}
+for(let i=0;i<140;i++) parts.push(new P(true));
+function animP(){
+  pctx.clearRect(0,0,PW,PH);
+  parts.forEach(p=>{p.tick();p.draw();});
+  requestAnimationFrame(animP);
+}
+animP();
+// start visible on home
+document.getElementById('particles').style.opacity = '0.5';
+
+// ── HOME BG CANVAS (subtle grid)
+const bgc = document.getElementById('bg-canvas');
+const bgx = bgc.getContext('2d');
+function resizeBg(){ bgc.width=window.innerWidth; bgc.height=window.innerHeight; drawBg(); }
+function drawBg(){
+  bgx.clearRect(0,0,bgc.width,bgc.height);
+  bgx.strokeStyle='rgba(37,37,56,0.6)'; bgx.lineWidth=.5;
+  const sz=60;
+  for(let x=0;x<bgc.width;x+=sz){ bgx.beginPath();bgx.moveTo(x,0);bgx.lineTo(x,bgc.height);bgx.stroke(); }
+  for(let y=0;y<bgc.height;y+=sz){ bgx.beginPath();bgx.moveTo(0,y);bgx.lineTo(bgc.width,y);bgx.stroke(); }
+  // gradient overlay
+  const g=bgx.createRadialGradient(bgc.width*.3,bgc.height*.4,0,bgc.width*.3,bgc.height*.4,bgc.width*.7);
+  g.addColorStop(0,'rgba(200,255,0,.04)'); g.addColorStop(1,'transparent');
+  bgx.fillStyle=g; bgx.fillRect(0,0,bgc.width,bgc.height);
+  const g2=bgx.createRadialGradient(bgc.width*.8,bgc.height*.7,0,bgc.width*.8,bgc.height*.7,bgc.width*.5);
+  g2.addColorStop(0,'rgba(255,60,172,.05)'); g2.addColorStop(1,'transparent');
+  bgx.fillStyle=g2; bgx.fillRect(0,0,bgc.width,bgc.height);
+}
+resizeBg(); window.addEventListener('resize',resizeBg);
+</script>
+</body>
+</html>
